@@ -25,7 +25,7 @@ export async function action({ request }: Route.ActionArgs) {
       }
       await db.insert(routes).values({ name, link });
       const url = new URL(request.url);
-      return new Response(`${url.protocol}//${url.host}/${name}`, {
+      return new Response(`https://${url.host}/${name}`, {
         status: 200,
       });
     } else {
