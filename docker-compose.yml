@@ -1,5 +1,13 @@
 services:
-  jebsite:
+  bgl.to:
     build: .
+    pull_policy: build
+    restart: unless-stopped
     ports:
-      - 127.0.0.1:3000:3000
+      - 127.0.0.1:${PORT}:3000
+    volumes:
+      - "./${MEDIA_PATH}:/app/${MEDIA_PATH}"
+    environment:
+      AUTH: ${AUTH}
+      MEDIA_PATH: ${MEDIA_PATH}
+      DATABASE_URL: ${DATABASE_URL}
