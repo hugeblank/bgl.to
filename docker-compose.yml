@@ -2,6 +2,9 @@ services:
   bgl.to:
     build: .
     pull_policy: build
+    depends_on:
+      db:
+        condition: service_healthy
     restart: unless-stopped
     ports:
       - 127.0.0.1:${PORT}:3000
@@ -10,4 +13,16 @@ services:
     environment:
       AUTH: ${AUTH}
       MEDIA_PATH: ${MEDIA_PATH}
-      DATABASE_URL: ${DATABASE_URL}
+      DATABASE_URL: postgres://postgres:${PG_PASS}@db:5432/postgres
+  db:
+    image: postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_PASSWORD: ${PG_PASS}
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 1s
+      timeout: 5s
+      retries: 10
+    volumes:
+      - ./pgdata:/var/lib/postgresql/data
