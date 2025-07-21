@@ -11,7 +11,8 @@ export async function loader({ params }: Route.LoaderArgs) {
     .where(eq(routes.name, params.name));
   if (results.length > 0) {
     const result = results[0];
-    db.update(routes)
+    await db
+      .update(routes)
       .set({ uses: result.uses + 1 })
       .where(eq(routes.name, result.name));
     return redirect(result.link, 308);

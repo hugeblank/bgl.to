@@ -24,8 +24,7 @@ export async function action({ request }: Route.ActionArgs) {
         return new Response(`Name ${name} already exists.`, { status: 400 });
       }
       await db.insert(routes).values({ name, link });
-      const url = new URL(request.url);
-      return new Response(`https://${url.host}/${name}`, {
+      return new Response(name, {
         status: 200,
       });
     } else {

@@ -15,8 +15,7 @@ export async function action({ request }: Route.ActionArgs) {
         const type = await fileTypeFromBuffer(buf);
         const name = `${Date.now()}.${type ? type.ext : "txt"}`;
         await writeFile(path.join(env.MEDIA_PATH, name), Buffer.from(buf));
-        const url = new URL(request.url);
-        return new Response(`https://${url.host}/m/${name}`, {
+        return new Response(name, {
           status: 200,
         });
       }
